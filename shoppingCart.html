@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1>Shopping Cart</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price (EUR)</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="cart-items">
+        </tbody>
+    </table>
+    <div class="form-group">
+        <label for="productName">Product Name</label>
+        <input type="text" class="form-control" id="productName" placeholder="Product Name">
+    </div>
+    <div class="form-group">
+        <label for="productPrice">Price (EUR)</label>
+        <input type="number" class="form-control" id="productPrice" placeholder="Price">
+    </div>
+    <div class="form-group">
+        <label for="productQuantity">Quantity</label>
+        <input type="number" class="form-control" id="productQuantity" placeholder="Quantity">
+    </div>
+    <button class="btn btn-primary" onclick="addProduct()">Add Product</button>
+    <button class="btn btn-danger" onclick="clearCart()">Clear Cart</button>
+    <h4 class="mt-4">Total: <span id="cart-total">0.00</span> EUR</h4>
+</div>
+
+<script>
+    function updateTotal() {
+        let total = 0;
+        document.querySelectorAll('.product-row').forEach(row => {
+            const price = parseFloat(row.querySelector('.product-price').textContent);
+            const quantity = parseInt(row.querySelector('.product-quantity').textContent);
+            total += price * quantity;
+        });
+        document.getElementById('cart-total').textContent = total.toFixed(2);
+    }
+
+    function addProduct() {
+        const name = document.getElementById('productName').value;
+        const price = parseFloat(document.getElementById('productPrice').value);
+        const quantity = parseInt(document.getElementById('productQuantity').value);
+        
+        if (name && price && quantity) {
+            const tbody = document.getElementById('cart-items');
+            const newRow = document.createElement('tr');
+            newRow.classList.add('product-row');
+            newRow.innerHTML = `
+                <td class="product-name">${name}</td>
+                <td class="product-price">${price.toFixed(2)}</td>
+                <td class="product-quantity">${quantity}</td>
+                <td class="product-total">${(price * quantity).toFixed(2)}</td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteProduct(this)">Delete</button>
+                    <button class="btn btn-primary" onclick="editProduct(this)">Edit</button>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            updateTotal();
+        }
+    }
+
+    function editProduct(button) {
+        const row = button.parentNode.parentNode;
+        const name = row.querySelector('.product-name');
+        const price = row.querySelector('.product-price');
+        const quantity = row.querySelector('.product-quantity');
+        
+        const newName = prompt('Enter new name', name.textContent);
+        const newPrice = parseFloat(prompt('Enter new price', price.textContent));
+        const newQuantity = parseInt(prompt('Enter new quantity', quantity.textContent));
+        
+        if (newName && newPrice && newQuantity) {
+            name.textContent = newName;
+            price.textContent = newPrice.toFixed(2);
+            quantity.textContent = newQuantity;
+            row.querySelector('.product-total').textContent = (newPrice * newQuantity).toFixed(2);
+            updateTotal();
+        }
+    }
+
+    function deleteProduct(button) {
+        const row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+        updateTotal();
+    }
+
+    function clearCart() {
+        document.getElementById('cart-items').innerHTML = '';
+        updateTotal();
+    }
+</script>
+
+</body>
+</html>

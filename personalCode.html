@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Person Data</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Personal Code</th>
+          <th scope="col">Birthdate</th>
+          <th scope="col">Age</th>
+        </tr>
+      </thead>
+      <tbody id="peopleData">
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    const peopleData = [
+      { name: "Mari Maasikas", personalCode: "38705123568" },
+      { name: "Jaan Jõesaar", personalCode: "49811234567" },
+      { name: "Kristiina Kukk", personalCode: "39203029876" },
+      { name: "Margus Mustikas", personalCode: "49807010346" },
+      { name: "Jaak Järve", personalCode: "39504234985" },
+      { name: "Kadi Kask", personalCode: "39811136789" },
+      { name: "Markus Väli", personalCode: "50605267059" },
+    ];
+
+    const tableBody = document.getElementById('peopleData');
+
+    peopleData.forEach(person => {
+      const birthYearPrefix = person.personalCode[0];
+      let birthYear, birthMonth, birthDay;
+
+      switch (birthYearPrefix) {
+        case '1':
+        case '2':
+          birthYear = 1800 + parseInt(person.personalCode.substr(1, 2));
+          break;
+        case '3':
+        case '4':
+          birthYear = 1900 + parseInt(person.personalCode.substr(1, 2));
+          break;
+        case '5':
+        case '6':
+          birthYear = 2000 + parseInt(person.personalCode.substr(1, 2));
+          break;
+        case '7':
+        case '8':
+          birthYear = 2100 + parseInt(person.personalCode.substr(1, 2));
+          break;
+        default:
+          birthYear = 'N/A';
+          break;
+      }
+
+      birthMonth = parseInt(person.personalCode.substr(3, 2));
+      birthDay = parseInt(person.personalCode.substr(5, 2));
+
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth() + 1;
+      const currentDay = new Date().getDate();
+
+      let age = currentYear - birthYear;
+
+      if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
+        age--;
+      }
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${person.name}</td>
+        <td>${person.personalCode}</td>
+        <td>${birthDay}.${birthMonth}.${birthYear}</td>
+        <td>${age}</td>
+      `;
+
+      tableBody.appendChild(row);
+    });
+  </script>
+</body>
+</html>

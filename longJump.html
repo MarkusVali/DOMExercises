@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Student Results</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Best Result</th>
+                    <th>Average Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <script>
+                    const students = [
+                        { nimi: "Anna", tulemused: [4.5, 4.8, 4.6] },
+                        { nimi: "Mart", tulemused: [5.2, 5.1, 5.4] },
+                        { nimi: "Kati", tulemused: [4.9, 5.0, 4.7] },
+                        { nimi: "Jaan", tulemused: [4.3, 4.6, 4.4] },
+                        { nimi: "Liis", tulemused: [5.0, 5.2, 5.1] },
+                        { nimi: "Peeter", tulemused: [5.5, 5.3, 5.4] },
+                        { nimi: "Eva", tulemused: [4.8, 4.9, 4.7] },
+                        { nimi: "Marten", tulemused: [4.7, 4.6, 4.8] },
+                        { nimi: "Kairi", tulemused: [5.1, 5.3, 5.0] },
+                        { nimi: "Rasmus", tulemused: [4.4, 4.5, 4.3] },
+                    ];
+
+                    students.forEach(student => {
+                        const bestResult = Math.max(...student.tulemused);
+                        const averageResult = (student.tulemused.reduce((a, b) => a + b, 0) / student.tulemused.length).toFixed(2);
+
+                        document.write(`
+                            <tr>
+                                <td>${student.nimi}</td>
+                                <td>${bestResult}</td>
+                                <td>${averageResult}</td>
+                            </tr>
+                        `);
+                    });
+                </script>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Searcher</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Name Searcher</h1>
+
+        <div class="form-group">
+            <label for="nameInput">Search for a name:</label>
+            <input type="text" class="form-control" id="nameInput" oninput="filterNames()">
+        </div>
+
+        <ul class="list-group" id="nameList">
+        </ul>
+
+        <div class="mt-3" id="result"></div>
+    </div>
+
+    <script>
+        const nimed = ["mari maasikas", "jaan jõesaar", "kristiina kukk", "margus mustikas", "jaak järve", "kadi kask", "Toomas Tamm", "Kadi Meri", "Leena Laas", "Madis Mets", "Hannes Hõbe", "Anu Allikas", "Kristjan Käär", "Eva Esimene", "Jüri Jõgi", "Liis Lepik", "Kalle Kask", "Tiina Teder", "Kaidi Koppel", "tiina Toom"];
+
+        function capitalizeName(name) {
+            return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        }
+
+        function generateEmail(lastName) {
+            return `${lastName.toLowerCase()}@metshein.com`;
+        }
+
+        function filterNames() {
+            const inputName = document.getElementById('nameInput').value.toLowerCase();
+            const nameList = document.getElementById('nameList');
+            nameList.innerHTML = '';
+
+            const filteredNames = nimed.filter(name => name.toLowerCase().includes(inputName));
+
+            filteredNames.forEach(fullName => {
+                const lastName = fullName.split(' ')[1];
+                const capitalizedFullName = capitalizeName(fullName);
+                const email = generateEmail(lastName);
+
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.innerHTML = `<strong>${capitalizedFullName}</strong> (${email})`;
+                nameList.appendChild(listItem);
+            });
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
